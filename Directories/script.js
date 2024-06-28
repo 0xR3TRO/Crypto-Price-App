@@ -14,7 +14,7 @@ fetch(
 			container.innerHTML += `
                 <div class="coin ${change < 0 ? "falling" : "rising"}">
                     <div class="coin-logo">
-                        <img src="images/${coin}.png">
+                        <img src="/Media & Images/${coin}.png">
                     </div>
                     <div class="coin-name">
                         <h3>${coin}</h3>
