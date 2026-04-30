@@ -11,6 +11,7 @@ Projekt "Crypto Price App" ma na celu dostarczenie użytkownikom narzędzia do �
 - **Powiadomienia cenowe:** Opcja ustawiania powiadomień dla określonych cen aktywów.
 - **Ulubione aktywa:** Możliwość dodawania ulubionych kryptowalut do szybkiego dostępu i monitorowania.
 - **Udostępnianie:** Opcja udostępniania aktualnych cen na platformach społecznościowych lub przez inne kanały komunikacyjne.
+- **Audyt techniczny:** Dedykowana strona z oceną repo i roadmapą zmian.
 
 ## Analiza wymagań
 
@@ -109,6 +110,10 @@ Architektura oparta jest na mikroserwisach, gdzie:
 
 - **Wsparcie techniczne:** Ustanowienie kanałów komunikacji z użytkownikami w celu zgłaszania problemów oraz dostarczania wsparcia.
 - **Aktualizacje:** Planowanie regularnych aktualizacji aplikacji w zależności od potrzeb rynku oraz opinii użytkowników.
+
+## Audyt repozytorium (Nowe)
+
+W aplikacji dostępna jest nowa strona `audit.html`, zawierająca ustrukturyzowany audyt techniczny repozytorium i plan zmian.
 
 ## Harmonogram
 

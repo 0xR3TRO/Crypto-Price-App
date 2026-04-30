@@ -11,6 +11,7 @@ The "Crypto Price App" project aims to provide users with a tool to track real-t
 - **Price Alerts:** Option to set alerts for specific price levels of cryptocurrencies.
 - **Favorite Assets:** Functionality to add and manage a list of favorite cryptocurrencies for quick access.
 - **Sharing:** Ability to share current prices on social platforms or other communication channels.
+- **Technical Audit:** Dedicated "Audit" view with a structured repository review and roadmap.
 
 ## Requirements Analysis
 
@@ -108,6 +109,11 @@ The architecture is based on microservices where:
 
 - **Technical Support:** Establish communication channels for user issue reporting and support.
 - **Updates:** Plan regular application updates based on market needs and user feedback.
+
+## Repository Audit (New)
+
+The app now includes a dedicated audit page with a structured technical assessment and roadmap:
+- Open `audit.html` in the browser or deploy it alongside `index.html`.
 
 ## Schedule
 

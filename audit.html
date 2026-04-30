@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="Directories/style.css" />
+		<title>Crypto Price App — Audyt techniczny</title>
+	</head>
+	<body class="report-page">
+		<header class="page-header">
+			<div class="brand">
+				<h1>Audyt techniczny repozytorium</h1>
+				<p>Raport oparty wyłącznie o strukturę plików i dokumentację repo.</p>
+			</div>
+			<nav class="page-nav">
+				<a href="index.html">Ceny</a>
+				<a class="active" href="audit.html">Audyt techniczny</a>
+			</nav>
+		</header>
+
+		<main class="report">
+			<section class="report-section">
+				<h2># 1. Executive Summary</h2>
+				<ul>
+					<li><strong>Typ projektu:</strong> statyczna aplikacja web (HTML/CSS/JS) pobierająca ceny z CoinGecko API.</li>
+					<li>
+						<strong>Największe problemy:</strong>
+						<ul>
+							<li>Brak testów automatycznych i pipeline CI/CD.</li>
+							<li>Cała logika w jednym pliku JS — brak warstw i modułów.</li>
+							<li>Brak obsługi błędów, stanu ładowania i limitów API.</li>
+							<li>Dokumentacja opisuje inny stack (React/Node) niż kod.</li>
+							<li>Brak informacji o bezpieczeństwie i deploymencie.</li>
+						</ul>
+					</li>
+					<li>
+						<strong>Największe dźwignie poprawy (top 5):</strong>
+						<ol>
+							<li>Wprowadzenie struktury <code>src/</code> i modułów oraz minimalnego builda.</li>
+							<li>Dodanie testów (unit + e2e) i bramek jakościowych w CI.</li>
+							<li>Obsługa stanów UI (loading/error/empty) + retry/caching.</li>
+							<li>Ujednolicenie dokumentacji z realnym kodem i roadmapą.</li>
+							<li>Podstawowe security: skan zależności, CSP, polityka sekretów.</li>
+						</ol>
+					</li>
+				</ul>
+			</section>
+
+			<section class="report-section">
+				<h2># 2. Odczyt repo z samej struktury i dokumentacji</h2>
+				<div class="report-grid">
+					<div>
+						<h3>Co wiadomo na pewno</h3>
+						<ul>
+							<li>Repo zawiera statyczne pliki: <code>index.html</code>, <code>Directories/script.js</code>, <code>Directories/style.css</code>.</li>
+							<li>W katalogu <code>Media & Images</code> są ikony kryptowalut używane w UI.</li>
+							<li>Skrypt JS pobiera ceny 6 kryptowalut z CoinGecko API.</li>
+							<li>Dokumentacja (PL/EN) opisuje wymagania funkcjonalne i architekturę w ujęciu ogólnym.</li>
+							<li>Brak widocznych narzędzi build/test/lint (np. brak <code>package.json</code>).</li>
+						</ul>
+					</div>
+					<div>
+						<h3>Założenia (jawnie)</h3>
+						<ul>
+							<li><strong>Założenie:</strong> aplikacja jest hostowana jako statyczna strona (np. GitHub Pages, S3).</li>
+							<li><strong>Założenie:</strong> brak backendu i bazy danych w tym repo.</li>
+							<li><strong>Założenie:</strong> brak logowania i profili użytkowników (nie wynika z kodu).</li>
+						</ul>
+					</div>
+					<div>
+						<h3>Luki informacyjne</h3>
+						<ul>
+							<li>Brak informacji o środowiskach, release’ach i rollbacku.</li>
+							<li>Brak polityki bezpieczeństwa, zarządzania sekretami i SLA.</li>
+							<li>Brak licencji, właścicieli komponentów i procesu zmian.</li>
+							<li>Brak metryk jakości i observability.</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section class="report-section">
+				<h2># 3. Ocena dojrzałości (0–5)</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Obszar</th>
+							<th>Ocena</th>
+							<th>Uzasadnienie</th>
+							<th>Priorytet</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Architektura</td>
+							<td>1</td>
+							<td>Brak podziału na warstwy/moduły, pojedynczy skrypt.</td>
+							<td>P1</td>
+						</tr>
+						<tr>
+							<td>Jakość kodu</td>
+							<td>1</td>
+							<td>Brak lint/format; logika i render w jednym miejscu.</td>
+							<td>P1</td>
+						</tr>
+						<tr>
+							<td>Testy</td>
+							<td>0</td>
+							<td>Brak infrastruktury testowej.</td>
+							<td>P0</td>
+						</tr>
+						<tr>
+							<td>Bezpieczeństwo</td>
+							<td>1</td>
+							<td>Brak skanów zależności, CSP, polityk.</td>
+							<td>P0</td>
+						</tr>
+						<tr>
+							<td>CI/CD</td>
+							<td>0</td>
+							<td>Brak workflowów i automatyzacji deployu.</td>
+							<td>P0</td>
+						</tr>
+						<tr>
+							<td>Observability</td>
+							<td>0</td>
+							<td>Brak logowania błędów i metryk UX.</td>
+							<td>P2</td>
+						</tr>
+						<tr>
+							<td>DX</td>
+							<td>1</td>
+							<td>Brak narzędzi developer experience (scripts, docs dev).</td>
+							<td>P1</td>
+						</tr>
+						<tr>
+							<td>Dokumentacja</td>
+							<td>2</td>
+							<td>Istnieje opis funkcji, ale niezgodny ze stanem kodu.</td>
+							<td>P1</td>
+						</tr>
+						<tr>
+							<td>Skalowalność</td>
+							<td>1</td>
+							<td>Brak mechanizmów cache, paginacji, modułów.</td>
+							<td>P2</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section class="report-section">
+				<h2># 4. Rekomendowany stack i narzędzia</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Obszar</th>
+							<th>Obecnie</th>
+							<th>Rekomendacja</th>
+							<th>Dlaczego</th>
+							<th>Koszt zmiany</th>
+							<th>Ryzyko</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Runtime / framework</td>
+							<td>Vanilla JS + HTML/CSS</td>
+							<td>
+								Wariant A: Vite + TypeScript + React (UI/komponenty).<br />
+								Wariant B: SvelteKit (mniej boilerplate).<br />
+								Wariant C: pozostanie przy Vanilla + moduły ES i Vite.
+							</td>
+							<td>Wybór zależy od skali UI i potrzeb zespołu; każdy wariant poprawia strukturę i tooling.</td>
+							<td>Średni</td>
+							<td>Średnie</td>
+						</tr>
+						<tr>
+							<td>Testy</td>
+							<td>Brak</td>
+							<td>Vitest + Testing Library (unit), Playwright (e2e).</td>
+							<td>Zapewnia regresję i jakość UX.</td>
+							<td>Średni</td>
+							<td>Niskie</td>
+						</tr>
+						<tr>
+							<td>Lint / format</td>
+							<td>Brak</td>
+							<td>ESLint + Prettier + EditorConfig.</td>
+							<td>Standaryzacja kodu i mniej błędów.</td>
+							<td>Niski</td>
+							<td>Niskie</td>
+						</tr>
+						<tr>
+							<td>Dependency / security scanning</td>
+							<td>Brak</td>
+							<td>Dependabot + npm audit + CodeQL.</td>
+							<td>Wykrywanie CVE i szybkie aktualizacje.</td>
+							<td>Niski</td>
+							<td>Niskie</td>
+						</tr>
+						<tr>
+							<td>CI/CD</td>
+							<td>Brak</td>
+							<td>GitHub Actions: lint → test → build → deploy.</td>
+							<td>Automatyzuje jakość i dostarczanie.</td>
+							<td>Średni</td>
+							<td>Niskie</td>
+						</tr>
+						<tr>
+							<td>Monitoring / logging / tracing</td>
+							<td>Brak</td>
+							<td>Sentry + Web Vitals (Lighthouse CI).</td>
+							<td>Szybka diagnoza błędów i degradacji UX.</td>
+							<td>Niski</td>
+							<td>Niskie</td>
+						</tr>
+						<tr>
+							<td>IaC / środowiska</td>
+							<td>Brak</td>
+							<td>Terraform (opcjonalnie) lub GitHub Pages + env config.</td>
+							<td>Powtarzalny deploy i audyt zmian.</td>
+							<td>Średni</td>
+							<td>Średnie</td>
+						</tr>
+						<tr>
+							<td>Zarządzanie sekretami</td>
+							<td>Brak</td>
+							<td>GitHub Secrets + rotacja i minimalne uprawnienia.</td>
+							<td>Uniknięcie wycieków kluczy API.</td>
+							<td>Niski</td>
+							<td>Niskie</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section class="report-section">
+				<h2># 5. Docelowa architektura i struktura repo</h2>
+				<h3>Proponowane bounded contexts / moduły</h3>
+				<ul>
+					<li><strong>Market Data</strong> — pobieranie i normalizacja danych z API.</li>
+					<li><strong>Watchlist</strong> — ulubione aktywa (local storage).</li>
+					<li><strong>Alerts</strong> — progi cenowe i powiadomienia.</li>
+					<li><strong>UI Core</strong> — komponenty, layout, style.</li>
+				</ul>
+
+				<h3>Kontrakty między modułami</h3>
+				<ul>
+					<li><code>MarketDataClient</code> zwraca ustandaryzowany model <code>Quote</code>.</li>
+					<li><code>WatchlistStore</code> operuje na <code>AssetId</code> i emituje zmiany.</li>
+					<li><code>AlertsService</code> subskrybuje <code>Quote</code> i publikuje eventy.</li>
+				</ul>
+
+				<h3>Docelowe drzewo katalogów (przykładowe)</h3>
+				<pre><code>/
+├─ src/
+│  ├─ app/
+│  ├─ assets/
+│  ├─ components/
+│  ├─ features/
+│  │  ├─ market-data/
+│  │  ├─ watchlist/
+│  │  └─ alerts/
+│  ├─ services/
+│  ├─ styles/
+│  └─ tests/
+├─ docs/
+├─ infra/
+└─ public/</code></pre>
+
+				<h3>Zasady „co gdzie trafia”</h3>
+				<ul>
+					<li>Logika domenowa w <code>features/*</code>, UI w <code>components</code>.</li>
+					<li>Integracje z API w <code>services</code>.</li>
+					<li>Statyczne zasoby w <code>assets</code> i <code>public</code>.</li>
+				</ul>
+			</section>
+
+			<section class="report-section">
+				<h2># 6. Proces wytwarzania end-to-end</h2>
+				<ul>
+					<li><strong>Git workflow:</strong> GitHub Flow (krótkie feature-branch, PR z review).</li>
+					<li>
+						<strong>Definition of Ready:</strong> jasno opisany problem, akceptacja zakresu, kryteria sukcesu.
+					</li>
+					<li>
+						<strong>Definition of Done:</strong> testy przechodzą, brak krytycznych luk bezpieczeństwa, aktualne docs.
+					</li>
+					<li>
+						<strong>Quality gates:</strong> lint + testy + skany bezpieczeństwa + Lighthouse CI.
+					</li>
+					<li><strong>Wersjonowanie:</strong> SemVer + tagi releasowe.</li>
+					<li>
+						<strong>Release strategy:</strong> automatyczny deploy po merge do <code>main</code>.
+					</li>
+					<li><strong>Rollback / hotfix:</strong> szybki rollback na poprzedni tag + hotfix branch.</li>
+				</ul>
+			</section>
+
+			<section class="report-section">
+				<h2># 7. Plan wdrożenia (30-60-90)</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Faza</th>
+							<th>Zadania</th>
+							<th>Owner (rola)</th>
+							<th>Zależności</th>
+							<th>Ryzyko</th>
+							<th>Kryterium ukończenia</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>30 dni</td>
+							<td>Struktura <code>src</code>, lint/format, testy jednostkowe, CI.</td>
+							<td>Tech Lead + DevOps</td>
+							<td>Decyzja o stacku</td>
+							<td>Średnie</td>
+							<td>Automatyczne buildy i testy w PR.</td>
+						</tr>
+						<tr>
+							<td>60 dni</td>
+							<td>Watchlist, caching, obsługa błędów, monitoring.</td>
+							<td>Frontend Lead</td>
+							<td>API contract</td>
+							<td>Średnie</td>
+							<td>Stabilny UX i monitoring błędów.</td>
+						</tr>
+						<tr>
+							<td>90 dni</td>
+							<td>Alerts, optymalizacje wydajności, release automation.</td>
+							<td>Product + DevOps</td>
+							<td>Infra i observability</td>
+							<td>Średnie</td>
+							<td>Release <code>v1.0</code> z metrykami.</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3>Quick Wins (1–2 tyg.)</h3>
+				<ul>
+					<li>Dodanie ESLint + Prettier i podstawowych testów.</li>
+					<li>Uzupełnienie README o realny stack i instrukcję uruchomienia.</li>
+					<li>Obsługa błędów fetch + komunikaty w UI.</li>
+				</ul>
+			</section>
+
+			<section class="report-section">
+				<h2># 8. Rejestr ryzyk i mitigacje</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Ryzyko</th>
+							<th>Prawdopodobieństwo</th>
+							<th>Wpływ</th>
+							<th>Mitigacja</th>
+							<th>Trigger</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Limitowanie API CoinGecko</td>
+							<td>Średnie</td>
+							<td>Wysoki</td>
+							<td>Cache + retry + backoff</td>
+							<td>Wzrost liczby użytkowników</td>
+						</tr>
+						<tr>
+							<td>Brak testów regresyjnych</td>
+							<td>Wysokie</td>
+							<td>Średni</td>
+							<td>Unit + e2e w CI</td>
+							<td>Zmiana logiki API</td>
+						</tr>
+						<tr>
+							<td>Niespójna dokumentacja</td>
+							<td>Wysokie</td>
+							<td>Średni</td>
+							<td>Aktualizacja docs + ADR</td>
+							<td>Onboarding nowych devów</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section class="report-section">
+				<h2># 9. Backlog techniczny (priorytetyzowany)</h2>
+				<ul>
+					<li>
+						<strong>P0:</strong> dodać CI z lint + test (S/M) — redukcja ryzyka regresji i szybsze PR.
+					</li>
+					<li>
+						<strong>P0:</strong> ujednolicić dokumentację z realnym stackiem (S) — lepszy onboarding.
+					</li>
+					<li>
+						<strong>P1:</strong> wydzielić warstwę <code>services</code> dla API (M) — łatwiejsze testy.
+					</li>
+					<li>
+						<strong>P1:</strong> dodać cache i obsługę błędów (M) — stabilność UI.
+					</li>
+					<li>
+						<strong>P2:</strong> observability (Sentry, Web Vitals) (M) — szybka diagnoza.
+					</li>
+				</ul>
+			</section>
+
+			<section class="report-section">
+				<h2># 10. Metryki sukcesu</h2>
+				<ul>
+					<li><strong>DORA:</strong> wdrożenia/tydzień, lead time, MTTR, change failure rate.</li>
+					<li><strong>Jakość kodu:</strong> coverage ≥ 70% (Założenie: obecnie 0%).</li>
+					<li><strong>Niezawodność:</strong> % błędów API &lt; 1%, uptime ≥ 99.5%.</li>
+					<li><strong>UX:</strong> LCP &lt; 2.5s, CLS &lt; 0.1.</li>
+					<li><strong>Postęp co sprint:</strong> raport z CI + Lighthouse + liczba błędów z Sentry.</li>
+				</ul>
+			</section>
+		</main>
+	</body>
+</html>
