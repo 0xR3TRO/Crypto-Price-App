@@ -7,11 +7,67 @@
 }
 
 body {
-	height: 100vh;
+	min-height: 100vh;
+	background: #161616;
+	color: #e6e6e6;
+	font-family: "Mukta", sans-serif;
+}
+
+body.app {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: #161616;
+}
+
+body.report-page {
+	display: block;
+	padding: 32px 16px 80px;
+}
+
+.app-layout {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	align-items: center;
+}
+
+.page-header {
+	width: min(1100px, 100%);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 24px;
+}
+
+.page-header .brand h1 {
+	color: #fff;
+	font-size: 32px;
+	margin-bottom: 6px;
+}
+
+.page-header .brand p {
+	color: #b6b6b6;
+	font-size: 14px;
+}
+
+.page-nav {
+	display: flex;
+	gap: 12px;
+}
+
+.page-nav a {
+	color: #e6e6e6;
+	text-decoration: none;
+	font-size: 14px;
+	padding: 8px 14px;
+	border-radius: 999px;
+	border: 1px solid #2a2a2a;
+	background: #1c1c1c;
+}
+
+.page-nav a.active {
+	background: #2c2c2c;
+	border-color: #3a3a3a;
 }
 
 .coin {
@@ -20,7 +76,6 @@ body {
 	height: 80px;
 	border-radius: 8px;
 	margin: 38px 0;
-	font-family: "Mukta", sans-serif;
 }
 
 .coin .coin-logo {
@@ -90,4 +145,70 @@ body {
 
 .coin.falling .coin-price .price {
 	color: #ff4040;
+}
+
+.report {
+	width: min(1100px, 100%);
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+.report-section {
+	background: #1c1c1c;
+	border-radius: 12px;
+	padding: 24px;
+	border: 1px solid #2a2a2a;
+}
+
+.report-section h2 {
+	font-size: 22px;
+	color: #fff;
+	margin-bottom: 12px;
+}
+
+.report-section h3 {
+	font-size: 18px;
+	margin: 16px 0 8px;
+	color: #f0f0f0;
+}
+
+.report-section ul,
+.report-section ol {
+	margin-left: 20px;
+	line-height: 1.6;
+}
+
+.report-grid {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.report table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 14px;
+}
+
+.report th,
+.report td {
+	border: 1px solid #2a2a2a;
+	padding: 10px;
+	vertical-align: top;
+}
+
+.report th {
+	background: #2a2a2a;
+	color: #fff;
+	text-align: left;
+}
+
+.report pre {
+	background: #141414;
+	padding: 16px;
+	border-radius: 8px;
+	overflow-x: auto;
+	border: 1px solid #2a2a2a;
 }
